@@ -50,7 +50,7 @@ class PermissionModuleApplicationTests {
 		employeeRepository.save(employee);
 
 		Mockito.when(employeeService.findEmployeeById(1L)).thenReturn(Optional.of(employee));
-		Employee employee2 = employeeService.findEmployeeById(2L).orElse(null);
+		Employee employee2 = employeeService.findEmployeeById(1L).orElse(null);
 
 		Assertions.assertEquals(employee,employee2);
 	}
