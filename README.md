@@ -3,6 +3,7 @@
 Kurallar
 
 Yıllık ücretli izne hak kazanmak için şirketimizde en az bir yıl çalışmış olmak gerekmektedir.
+
 Çalışanımız her yıl hizmet süresine göre aşağıda belirtilen izin sürelerine hak kazanır.
 
 1-5  Yıl -> 15 Gün
