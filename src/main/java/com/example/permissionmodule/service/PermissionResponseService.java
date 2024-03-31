@@ -3,6 +3,7 @@ package com.example.permissionmodule.service;
 import com.example.permissionmodule.entity.PermissionRequest;
 import com.example.permissionmodule.entity.PermissionResponse;
 import com.example.permissionmodule.enums.PermissionStatus;
+import com.example.permissionmodule.language.LanguageConfig;
 import com.example.permissionmodule.repository.PermissionRequestRepository;
 import com.example.permissionmodule.repository.PermissionResponseRepository;
 import org.springframework.stereotype.Service;
@@ -52,9 +53,13 @@ public class PermissionResponseService {
                     foundPermissionRequest.getPermission().setUsedAnnualLeave(foundPermissionRequest.getPermission().getUsedAnnualLeave()+foundPermissionRequest.getRequestDay());
                     permissionResponseRepository.save(foundPermissionResponse);
                 }
-                else{
-                    foundPermissionResponse.setPermissionStatus(PermissionStatus.REJECTED.getValue());
-                    permissionResponseRepository.save(foundPermissionResponse);
+                else if (foundPermissionRequest.getPermission().getHasAnnualLeave() < foundPermissionRequest.getRequestDay()){
+
+                    throw new IllegalStateException(LanguageConfig.getErrorMessage("employee.not.enough.permission", foundPermissionRequest.getEmployee().getLanguage()));
+                }
+                else if(employeeService.getWorkTime(foundPermissionRequest.getEmployee()) < 365 && foundPermissionRequest.getRequestDay() <= 5){
+
+                    throw new IllegalStateException(LanguageConfig.getErrorMessage("employee.not.enough.permission.first.year", foundPermissionRequest.getEmployee().getLanguage()));
                 }
             }
         }
@@ -62,7 +67,6 @@ public class PermissionResponseService {
 
     public void rejectPermissionRequestById(Long permissionResponseId) {
         Optional<PermissionResponse> permissionResponse = permissionResponseRepository.findById(permissionResponseId);
-
 
         if (permissionResponse.isPresent()) {
             PermissionResponse foundPermissionResponse = permissionResponse.get();

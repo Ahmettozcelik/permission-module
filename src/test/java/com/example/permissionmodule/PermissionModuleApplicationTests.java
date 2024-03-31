@@ -1,13 +1,12 @@
 package com.example.permissionmodule;
 
 import com.example.permissionmodule.entity.Employee;
-import com.example.permissionmodule.entity.Permission;
 import com.example.permissionmodule.mapper.EmployeeMapper;
 import com.example.permissionmodule.repository.EmployeeRepository;
 import com.example.permissionmodule.repository.PermissionRepository;
 import com.example.permissionmodule.repository.PermissionRequestRepository;
+import com.example.permissionmodule.repository.PermissionResponseRepository;
 import com.example.permissionmodule.service.EmployeeService;
-import nonapi.io.github.classgraph.utils.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,9 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyLong;
-
 @SpringBootTest
 class PermissionModuleApplicationTests {
 
@@ -28,16 +24,23 @@ class PermissionModuleApplicationTests {
 	private EmployeeRepository employeeRepository;
 	private PermissionRepository permissionRepository;
 	private PermissionRequestRepository permissionRequestRepository;
+	private PermissionResponseRepository permissionResponseRepository;
 	private EmployeeMapper employeeMapper;
+
+	PermissionModuleApplicationTests(PermissionResponseRepository permissionResponseRepository) {
+		this.permissionResponseRepository = permissionResponseRepository;
+	}
 
 	@BeforeEach
 	public void setUp(){
 		employeeRepository = Mockito.mock(EmployeeRepository.class);
 		permissionRepository = Mockito.mock(PermissionRepository.class);
 		permissionRequestRepository = Mockito.mock(PermissionRequestRepository.class);
+		permissionResponseRepository = Mockito.mock(PermissionResponseRepository.class);
 		employeeMapper = Mockito.mock(EmployeeMapper.class);
 
-		employeeService = new EmployeeService(employeeRepository,permissionRepository,permissionRequestRepository,employeeMapper);
+		employeeService = new EmployeeService(employeeRepository,permissionRepository,permissionRequestRepository,permissionResponseRepository,employeeMapper);
+
 	}
 
 	@Test
